@@ -52,13 +52,18 @@ if (isset($_POST['logsub'])){
 				$_SESSION['loggedIn'] = true;
 				$status= true;
 				$response['msg'] = "<label style='color: #fff;margin-top:3%;font-family:'Roboto'>Welcome Back, ". ucfirst($username)."</label>";
-				break;
+				header('Location: success.php');
 			}
 			else{
 				$status= false;
-				$response['msg'] ="<label style='color: #fff;font-family:'Roboto'>Username Doesn't Match</label>";
+				$response['msg'] = "<label style='color: #fff;font-family:'Roboto'>Username Doesn't Match</label>";
 
 			}
+		}
+		else{
+			$status= false;
+			$response['msg'] = "<label style='color: red;margin-top:3%;font-weight:1em;font-family:'Roboto'>Username Doesn't Match</label>";
+
 		}
 		if($status){
 			$response['status'] = 0;
@@ -133,15 +138,15 @@ if (isset($_POST['logsub'])){
 						?>	
 						<div class="form-group">
 	                    		<label class="sr-only" for="r-form-first-name">First name</label>
-	                        	<input type="text" name="r-form-first-name" placeholder="First name..." class="r-form-first-name form-control">
+	                        	<input type="text" required name="r-form-first-name" placeholder="First name..." class="r-form-first-name form-control">
 							</div>
 							<div class="form-group">
 	                        	<label class="sr-only" for="r-form-email">Email</label>
-	                        	<input type="email" name="r-form-email" placeholder="Email..." class="r-form-email form-control" style="height: 45px">
+	                        	<input type="email" required name="r-form-email" placeholder="Email..." class="r-form-email form-control" style="height: 45px">
 	                        </div>
 							<div class="form-group">
 	                        	<label class="sr-only" for="r-form-username">Username</label>
-	                        	<input type="text" name="r-form-username" placeholder="Username..." class="r-form-email form-control" style="height: 45px">
+	                        	<input type="text"  required name="r-form-username" placeholder="Username..." class="r-form-first-name form-control" style="height: 45px">
 	                        </div>
 	               
 	                        <div class="form-group">
