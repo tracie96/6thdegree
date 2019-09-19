@@ -81,11 +81,11 @@ img { max-width: 100%; }
 .r-form { padding-top: 40px; }
 .r-form .form-group { margin-bottom: 25px; }
 .r-form textarea { height: 100px; }
-.r-form .input-error { border-color: #42c5ea; }
+.r-form .input-error { border-color: red; }
 
 .l-form { padding-top: 40px; }
 .l-form .form-group { margin-bottom: 25px; }
-.l-form .input-error { border-color: #42c5ea; }
+.l-form .input-error { border-color: red; }
 
 .forms-right-icons .row { padding-bottom: 15px; }
 .forms-right-icons { padding-top: 40px; color: #fff; text-align: left; }
