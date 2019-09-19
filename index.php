@@ -8,6 +8,10 @@ if (isset($_POST['submit'])){
 	else if(empty($_POST["r-form-email"])){
 		$error ="<label class='text-danger'>Enter Email</label>";
 	}
+	else if(empty($_POST['r-form-username'])){
+		$error ="<label class='text-danger'>Enter Username</label>";
+
+	}
 	else if(empty($_POST["r-form-last-name"])){
 		$error ="<label class='text-danger'>Enter Password</label>";
 	}
@@ -18,20 +22,55 @@ if (isset($_POST['submit'])){
 			$extra = array(
 				'name' => $_POST['r-form-first-name'],
 				'email' => $_POST['r-form-email'],
-				'password' => $_POST['r-form-last-name']
+				'username' => $_POST['r-form-username'],
+				'password' => $_POST["r-form-last-name"],
 			);
 			$array_data[]= $extra;
 			$final_data = json_encode($array_data);
 			if(file_put_contents('employee_data.json', $final_data)){
-				$message ="<label style='color: #fff;font-family:'Roboto' '>Signed Up Successfully</label>";
+				$message ="<label style='color: #fff;font-family:'Roboto'>Signed Up Successfully</label>";
 			}
 		}
 		else{
 			$error ='JSON File not found';
 		}
+		
 	}
+	
+}
+if (isset($_POST['logsub'])){
+	$status= false;
+	$username=  htmlentities(strip_tags(trim($_POST['l-form-username'])));
+	$password= htmlentities(strip_tags(trim($_POST['l-form-password']))) ;
+
+	$current_data = json_decode(file_get_contents('employee_data.json'));
+	foreach($current_data as $key => $value){
+		if($username == $value->username){
+			if($password == $value ->password){
+				session_start();
+				$_SESSION['username'] = $username;
+				$_SESSION['loggedIn'] = true;
+				$status= true;
+				$response['msg'] = "<label style='color: #fff;margin-top:3%;font-family:'Roboto'>Welcome Back, ". ucfirst($username)."</label>";
+				break;
+			}
+			else{
+				$status= false;
+				$response['msg'] ="<label style='color: #fff;font-family:'Roboto'>Username Doesn't Match</label>";
+
+			}
+		}
+		if($status){
+			$response['status'] = 0;
+		}else{
+			$response['status']= -1;
+		}
+	}
+	
 }
 ?>
+
+
 
 <html lang="en">
 
@@ -100,6 +139,10 @@ if (isset($_POST['submit'])){
 	                        	<label class="sr-only" for="r-form-email">Email</label>
 	                        	<input type="email" name="r-form-email" placeholder="Email..." class="r-form-email form-control" style="height: 45px">
 	                        </div>
+							<div class="form-group">
+	                        	<label class="sr-only" for="r-form-username">Username</label>
+	                        	<input type="text" name="r-form-username" placeholder="Username..." class="r-form-email form-control" style="height: 45px">
+	                        </div>
 	               
 	                        <div class="form-group">
 	                        	<label class="sr-only" for="r-form-last-name">Password</label>
@@ -121,7 +164,12 @@ if (isset($_POST['submit'])){
 
                 <div class="row login-form">
                     <div class="col-sm-4 col-sm-offset-1">
-						<form role="form" action="" method="post" class="l-form">
+					<?php 
+					if(isset($response['msg'])){
+						echo $response['msg'];
+					}
+					?>
+						<form role="form" action="#" method="post" class="l-form">
 	                    	<div class="form-group">
 	                    		<label class="sr-only" for="l-form-username">Username</label>
 	                        	<input type="text" name="l-form-username" placeholder="Username..." class="l-form-username form-control" id="l-form-username">
@@ -130,7 +178,7 @@ if (isset($_POST['submit'])){
 	                        	<label class="sr-only" for="l-form-password">Password</label>
 	                        	<input type="password" name="l-form-password" placeholder="Password..." class="l-form-password form-control" id="l-form-password">
 	                        </div>
-				            <button type="submit" class="btn">Sign in!</button>
+				            <button type="submit" name="logsub" class="btn">Sign in!</button>
 				    	</form>
 				    	
                     </div>
